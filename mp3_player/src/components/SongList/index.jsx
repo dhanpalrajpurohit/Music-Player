@@ -3,7 +3,8 @@ import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 
 import { axiosInstance } from '../../AxiosInstance.jsx';
 import './index.css';
- 
+import Carousel from './../Carousel/index';
+
 const musicList = [
    {
       id: 1109731,
@@ -1235,15 +1236,15 @@ const musicList = [
 function SongList() {
 
    const [curMusic, setCurMusic] = useState(0);
-   const [audio, setAudio] = useState(new Audio(musicList[0].preview));
-   const [playing, setPlaying] = useState(false);
+   const [audioFile, setAudioFile] = useState(new Audio(musicList[0].preview));
+   const [playing, setPlaying] = useState(false);   
 
    useEffect(() => {
-      playing ? audio.play() : audio.pause();
+      playing ? audioFile.pause() : audioFile.play();
    }, [playing]);
 
    useEffect(() => {
-      setAudio((prev) => {
+      setAudioFile((prev) => {
          prev.pause();
          return new Audio(musicList[curMusic].preview);
       });
@@ -1260,6 +1261,7 @@ function SongList() {
             <div className="card" style={{ width: "500px" }}>
                <img src={musicList[curMusic].album.cover} height="200px" width="200" className="card-img-top" alt={`image-${curMusic}`} onClick={togglePlay} />
                <div className="card-body">
+                  {/* <audio id="audio-player" src={audioFile} controls/> */}
                   <h5>
                      {playing ? <FaPlayCircle  /> : <FaPauseCircle />}
                      {musicList[curMusic].title}
@@ -1302,6 +1304,7 @@ function SongList() {
                })}
             </tbody>
          </table>
+         <Carousel musicList={musicList}/>
       </div>
    )
 }
