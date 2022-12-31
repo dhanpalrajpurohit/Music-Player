@@ -140,3 +140,9 @@
 #pause {
     display: none
 }
+
+.music-player .card-body{
+   width: fit-content;
+   margin: auto;
+   color: black !important;
+}

@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
+import { FaPlay, FaPause, FaForward, FaBackward } from "react-icons/fa";
 
-import { axiosInstance } from '../../AxiosInstance.jsx';
 import './index.css';
-import Carousel from './../Carousel/index';
 
 const musicList = [
    {
@@ -1237,18 +1235,27 @@ function SongList() {
 
    const [curMusic, setCurMusic] = useState(0);
    const [audioFile, setAudioFile] = useState(new Audio(musicList[0].preview));
-   const [playing, setPlaying] = useState(false);   
+   const [playing, setPlaying] = useState(false);
 
    useEffect(() => {
       playing ? audioFile.pause() : audioFile.play();
    }, [playing]);
 
    useEffect(() => {
-      setAudioFile((prev) => {
-         prev.pause();
-         return new Audio(musicList[curMusic].preview);
-      });
-      setPlaying(true);
+      if(curMusic>=0){
+         setAudioFile((prev) => {
+            prev.pause();
+            return new Audio(musicList[curMusic].preview);
+         });
+         setPlaying(true);
+      }
+      else{
+         setAudioFile((prev) => {
+            prev.pause();
+            return new Audio(musicList[0].preview);
+         });
+         setPlaying(true);
+      }
    }, [curMusic]);
 
    const togglePlay = () => {
@@ -1257,31 +1264,26 @@ function SongList() {
 
    return (
       <div className="mt-5">
-         <div className="mx-auto">
-            <div className="card" style={{ width: "500px" }}>
-               <img src={musicList[curMusic].album.cover} height="200px" width="200" className="card-img-top" alt={`image-${curMusic}`} onClick={togglePlay} />
-               <div className="card-body">
-                  {/* <audio id="audio-player" src={audioFile} controls/> */}
-                  <h5>
-                     {playing ? <FaPlayCircle  /> : <FaPauseCircle />}
+         <div className="mb-5 col d-flex justify-content-center music-player" id="music-player">
+            <div className="card pt-1" style={{ width: "500px" }}>
+               <img src={musicList[curMusic].album.cover} height="200px" width="200" className="rounded-circle mx-auto" alt={`image-${curMusic}`} />
+               <div className="card-body text-center">
+                  <div className="d-flex justify-content-center">
+                     <button className="btn btn-dark m-1" onClick={()=>setCurMusic(curMusic-1)}><FaBackward /></button>
+                     <button className="btn btn-dark m-1" onClick={togglePlay}>{playing ? <FaPlay /> : <FaPause />}</button>
+                     <button className="btn btn-dark m-1" onClick={()=>setCurMusic(curMusic+1)}><FaForward /></button>
+                  </div>
+                  <h5 className="display-6">
                      {musicList[curMusic].title}
                   </h5>
-                  <h6>
-                     Album : {musicList[curMusic].album.title} <br />
-                     Artist : {musicList[curMusic].artist.name} <br />
+                  <h6 className="display-6">
+                    {musicList[curMusic].album.title}, {musicList[curMusic].artist.name}
                   </h6>
                </div>
             </div>
             <br />
          </div>
-         <table className="table table-dark rounded bi-text-center">
-            <thead>
-               <tr>
-                  <th scope="col">Sr.No</th>
-                  <th scope="col">Name</th>
-                  <th scope="col"></th>
-               </tr>
-            </thead>
+         <table className="table table-dark rounded text-center">
             <tbody>
                {musicList.map((ele, index) => {
                   return (
@@ -1304,7 +1306,6 @@ function SongList() {
                })}
             </tbody>
          </table>
-         <Carousel musicList={musicList}/>
       </div>
    )
 }
