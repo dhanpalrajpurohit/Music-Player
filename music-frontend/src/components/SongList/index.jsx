@@ -1263,8 +1263,8 @@ function SongList() {
    };
 
    return (
-      <div className="mt-5">
-         <div className="mb-5 col d-flex justify-content-center music-player" id="music-player">
+      <div className="mt-5 row">
+         <div className="mb-5 col-auto d-flex justify-content-center music-player" id="music-player">
             <div className="card pt-1" style={{ width: "500px" }}>
                <img src={musicList[curMusic].album.cover} height="200px" width="200" className="rounded-circle mx-auto" alt={`image-${curMusic}`} />
                <div className="card-body text-center">
@@ -1283,6 +1283,7 @@ function SongList() {
             </div>
             <br />
          </div>
+         <div className="col-auto">
          <table className="table table-dark rounded text-center">
             <tbody>
                {musicList.map((ele, index) => {
@@ -1306,6 +1307,7 @@ function SongList() {
                })}
             </tbody>
          </table>
+         </div>
       </div>
    )
 }
